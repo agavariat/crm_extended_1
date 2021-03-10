@@ -1,0 +1,119 @@
+<odoo>
+    <record id="crm_lost_inherit_form" model="ir.ui.view">
+        <field name="name">Crm Lead Lost</field>
+        <field name="model">crm.lead.lost</field>
+        <field name="inherit_id" ref="crm.crm_lead_lost_view_form"/>
+        <field name="arch" type="xml">
+            <field name="lost_reason_id" position="replace">
+            	<field name="x_motivo"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="score"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="crm_lead_inherit_form1" model="ir.ui.view">
+        <field name="name">Crm Lead</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <field name="lost_reason" position="replace">
+            	<field name="x_motivo" readonly="1" attrs="{'invisible':[('active', '=', True)]}"/>
+                <field name="lost_start_date" readonly="1" attrs="{'invisible':[('active', '=', True)]}"/>
+                <field name="teacher_id" invisible="1"/>
+                <field name="lost_end_date" readonly="1" attrs="{'invisible':[('active', '=', True)]}"/>
+                <field name="score" readonly="1" attrs="{'invisible':[('active', '=', True)]}"/>
+                <field name="stage_name" invisible="1"/>
+            </field>
+            <xpath expr="//button[2]" position="attributes">
+                <attribute name="attrs"/>
+                <attribute name="attrs">{'invisible': ['|', ('type', '=', 'opportunity'), '&amp;', ('probability', '=',
+                    0), ('active', '=', False),('stage_name','in',['Primer encuentro','Propietarios sin contactar'])]}
+                </attribute>
+            </xpath>
+            <xpath expr="//div[@class='oe_title']/h2" position="replace"/>
+        </field>
+    </record>
+
+
+<!--    <record model="ir.actions.act_window" id="crm_lead_action_pipeline1">-->
+<!--        <field name="name">All Pipeline</field>-->
+<!--        <field name="res_model">crm.lead</field>-->
+<!--        <field name="view_mode">kanban,tree,graph,pivot,form,calendar,activity</field>-->
+<!--        <field name="domain">[('type','=','opportunity')]</field>-->
+<!--        <field name="context">{-->
+<!--            'default_type': 'opportunity',-->
+<!--            }-->
+<!--        </field>-->
+<!--        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>-->
+<!--    </record>-->
+
+    <record id="view_crm_case_leads_filter1" model="ir.ui.view">
+        <field name="name">Crm Lead</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_case_leads_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[1]" position="after">
+                <filter string="EN stage"
+                            name="assigned_to_stage"
+                            domain="[('stage_name', '=', 'EN EN ESPERA DE PLAN DE ATENCIÓN')]"
+                            help="Leads that are assigned to me"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="crm.crm_lead_action_pipeline">
+        <field name="name">Pipeline</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,tree,graph,pivot,form,calendar,activity</field>
+        <field name="domain">[('type','=','opportunity')]</field>
+        <field name="context">{
+            'default_type': 'opportunity',
+            }
+        </field>
+        <field name="search_view_id" ref="crm.view_crm_case_opportunities_filter"/>
+    </record>
+
+<!--    <record model="ir.actions.act_window" id="crm_lead_action_pipeline2">-->
+<!--        <field name="name">All Pipeline</field>-->
+<!--        <field name="res_model">crm.lead</field>-->
+<!--        <field name="view_mode">kanban,tree,graph,pivot,form,calendar,activity</field>-->
+<!--        <field name="domain">[('type','=','opportunity')]</field>-->
+<!--        <field name="context">{-->
+<!--            'default_type': 'opportunity',-->
+<!--            'search_default_assigned_to_stage': 1-->
+<!--            }-->
+<!--        </field>-->
+<!--        <field name="search_view_id" ref="view_crm_case_leads_filter1"/>-->
+<!--    </record>-->
+
+<!--    <menuitem-->
+<!--            id="menu_crm_opportunities_master"-->
+<!--            action="crm_lead_action_pipeline1"-->
+<!--            name="All Pipeline"-->
+<!--            parent="crm.crm_menu_sales"-->
+<!--            sequence="0"-->
+<!--            groups="base.group_erp_manager,base.group_system"-->
+<!--    />-->
+
+<!--    <menuitem-->
+<!--            id="crm.menu_crm_opportunities"-->
+<!--            action="crm.action_your_pipeline"-->
+<!--            name="My Pipeline"-->
+<!--            parent="crm.crm_menu_sales"-->
+<!--            groups="group_orientador"-->
+<!--            sequence="0"/>-->
+
+<!--    <menuitem-->
+<!--            id="menu_crm_opportunities_coordinator"-->
+<!--            action="crm_lead_action_pipeline2"-->
+<!--            name="My Pipeline"-->
+<!--            parent="crm.crm_menu_sales"-->
+<!--            groups="group_state_coordinator"-->
+<!--            sequence="0"/>-->
+
+<!--    <menuitem-->
+<!--        id="crm.crm_menu_root"-->
+<!--        name="CRM"/>-->
+</odoo>
